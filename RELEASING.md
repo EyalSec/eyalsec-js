@@ -11,9 +11,10 @@ version tag is pushed. Nobody publishes from a laptop.
    the `eyalsec` package (for the very first publish, before the package
    exists, scope it to "All packages" of the account or organization, then
    narrow it afterwards). Give it an expiry.
-3. In this repository, create the environment **npm** (Settings >
-   Environments). Add the token there as the secret **NPM_TOKEN**. Adding a
-   required reviewer to the environment makes every publish wait for a click.
+3. In this repository, open Settings > Environments > **npm** (it exists
+   already, and only `v*` tags may deploy to it) and add the token as the
+   environment secret **NPM_TOKEN**. Adding a required reviewer there makes
+   every publish wait for a click.
 
 ## Every release
 
