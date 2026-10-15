@@ -1,7 +1,7 @@
 /**
  * Optional checks against a real EyalSec account.
  *
- *   EYALSEC_LIVE=1 EYALSEC_API_KEY=es2_... npm run test:live
+ *   EYALSEC_API_KEY=es2_... npm run test:live
  *
  * runs a read-only pass. Add EYALSEC_LIVE_WRITES=1 (and a full-access key) to
  * also create, change and delete a label, a filter, a rule, a saved search,
@@ -16,10 +16,10 @@ import { describe, it } from "node:test";
 
 import { ConflictError, EyalSec, NotFoundError, RuleMode } from "eyalsec";
 
-const live = process.env.EYALSEC_LIVE === "1";
+const live = process.env.EYALSEC_LIVE === "1" || process.env.npm_lifecycle_event === "test:live";
 const writes = live && process.env.EYALSEC_LIVE_WRITES === "1";
 
-describe("live", { skip: !live && "set EYALSEC_LIVE=1 to run" }, () => {
+describe("live", { skip: !live && "run npm run test:live (or set EYALSEC_LIVE=1) to run" }, () => {
   const client = new EyalSec();
 
   it("reads everything a read-only key may read", async () => {

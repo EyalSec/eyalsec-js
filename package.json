@@ -58,8 +58,8 @@
     "clean": "node scripts/clean.mjs",
     "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node scripts/cjs-package.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && tsc -p tsconfig.test.json && node --test build-test/test/ test/cjs.test.cjs",
-    "test:live": "npm run build && tsc -p tsconfig.test.json && EYALSEC_LIVE=1 node --test build-test/test/live.test.js",
+    "test": "npm run build && tsc -p tsconfig.test.json && node --test build-test/test/client.test.js build-test/test/live.test.js test/cjs.test.cjs",
+    "test:live": "npm run build && tsc -p tsconfig.test.json && node --test build-test/test/live.test.js",
     "prepack": "npm run build"
   },
   "devDependencies": {
