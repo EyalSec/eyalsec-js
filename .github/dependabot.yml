@@ -1,0 +1,23 @@
+# Dependabot keeps the pinned GitHub Actions and the development tools up to
+# date. Updates arrive as pull requests once a week, grouped per ecosystem.
+# The published package has no runtime dependencies.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      dev-tools:
+        patterns:
+          - "*"

@@ -1,0 +1,69 @@
+{
+  "name": "eyalsec",
+  "version": "0.1.0",
+  "description": "Typed client for the EyalSec API: read and triage the events es-python reports, manage machines, rules and filters, and gate CI on new findings.",
+  "keywords": [
+    "eyalsec",
+    "es-python",
+    "api-client",
+    "sdk",
+    "appsec",
+    "application-security",
+    "runtime-security",
+    "devsecops",
+    "security-events",
+    "typescript"
+  ],
+  "homepage": "https://eyalsec.com",
+  "bugs": {
+    "url": "https://github.com/EyalSec/eyalsec-js/issues",
+    "email": "support@eyalsec.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EyalSec/eyalsec-js.git"
+  },
+  "license": "MIT",
+  "author": "EyalSec <support@eyalsec.com> (https://eyalsec.com)",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/esm/*.js",
+    "dist/esm/*.d.ts",
+    "dist/cjs/*.js",
+    "dist/cjs/*.d.ts",
+    "dist/cjs/package.json",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node scripts/cjs-package.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && tsc -p tsconfig.test.json && node --test build-test/test/ test/cjs.test.cjs",
+    "test:live": "npm run build && tsc -p tsconfig.test.json && EYALSEC_LIVE=1 node --test build-test/test/live.test.js",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "18.19.130",
+    "typescript": "5.9.3"
+  }
+}

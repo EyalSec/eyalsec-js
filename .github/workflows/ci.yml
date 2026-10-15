@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["18", "20", "22", "24"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  other-os:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm pack
+      - name: The package holds only the build, README, LICENSE, CHANGELOG and package.json
+        run: |
+          tar tzf eyalsec-*.tgz | sort
+          ! tar tzf eyalsec-*.tgz | grep -vxE 'package/(package\.json|README\.md|LICENSE|CHANGELOG\.md|dist/(esm|cjs)/[a-z]+\.(js|d\.ts)|dist/cjs/package\.json)'
+      - name: The package resolves correctly for every module system
+        run: |
+          npx --yes publint@0.3.25 --strict eyalsec-*.tgz
+          npx --yes @arethetypeswrong/cli@0.18.5 eyalsec-*.tgz
+      - name: The packed tarball installs and loads both ways
+        run: |
+          mkdir -p "$RUNNER_TEMP/consumer" && cd "$RUNNER_TEMP/consumer"
+          npm init -y >/dev/null
+          npm install "$GITHUB_WORKSPACE"/eyalsec-*.tgz
+          node -e 'const { EyalSec } = require("eyalsec"); new EyalSec({ apiKey: "es2_x" })'
+          node --input-type=module -e 'import { EyalSec } from "eyalsec"; new EyalSec({ apiKey: "es2_x" })'
