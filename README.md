@@ -16,7 +16,7 @@ for await (const event of client.iterEvents({ severity: ["critical", "high"], fr
 }
 ```
 
-> **This package is the API client, not the runtime.** `npm install eyalsec` gives you this library. It is not es-python, the EyalSec Python runtime, and it adds no security checks to your program. The runtime is installed from your EyalSec dashboard: see the [Quick start](https://eyalsec.com/docs/quick-start).
+> **This package is the API client.** `npm install eyalsec` gives you this library. es-python, the EyalSec Python runtime, is a separate install. The runtime is installed from your EyalSec dashboard: see the [Quick start](https://eyalsec.com/docs/quick-start).
 
 ## What EyalSec does
 
